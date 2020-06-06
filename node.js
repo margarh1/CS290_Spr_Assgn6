@@ -11,10 +11,6 @@ var pool = mysql.createPool({
   user : 'cs290_hamarg',
   password : '8125',
   database : 'cs290_hamarg'
-  // host : '127.0.0.1',
-  // user : 'student',
-  // password : 'default',
-  // database : 'student'
 });
 
 app.engine('handlebars', handlebars.engine);
@@ -24,28 +20,29 @@ app.set('port', process.argv[2]);
 app.use(express.static('public'));
 
 app.get('/',function(req,res,next){
-  console.log(['get', req.query]);
   var context = {};
-  // pool.query("SELECT * FROM workouts", function(err, rows, fields) {
-  //   if (err) {
-  //     next(err);
-  //     return;
-  //   }
-  //   context.results = JSON.stringify(rows);
+  pool.query("SELECT * FROM workouts", function(err, rows, fields) {
+    if (err) {
+      next(err);
+      return;
+    }
+    context.results = JSON.stringify(rows);
     res.render('home', context);
-  // });
+  console.log(['get', context]);
+  });
 });
 
 app.post('/', function(req,res,next){
-  console.log(['post', req.query]);
+  console.log(req.query);
   var context = {};
-  pool.query("INSERT INTO workouts('name') VALUES (?)", 'test', function(err, result){
+  pool.query("INSERT INTO workouts(`name`) VALUES (?)", ['test'], function(err, result){
     if (err) {
       next(err);
       return;
     }
     context.results = "Inserted id " + result.insertId;
     res.render('home', context);
+  console.log(['post', context]);
   });
 });
 

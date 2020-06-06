@@ -6,5 +6,24 @@
   </head>
   <body>
     {{{body}}}
+
+<br><hr><br>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Reps</th>
+          <th>Weight</th>
+          <th>Date</th>
+          <th>Units</th>
+        </tr>
+      </thead>
+      <tbody id='results'>
+        {{#each context}}
+          {{this}}
+        {{/each}}
+      <tbody>
+    </table>
   </body>
 </html>
