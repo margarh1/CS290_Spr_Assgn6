@@ -19,9 +19,15 @@
           <th>Units</th>
         </tr>
       </thead>
-      <tbody id='results'>
-        {{#each context}}
-          {{this}}
+      <tbody>
+        {{#each data}}
+          <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.reps}}</td>
+            <td>{{this.weight}}</td>
+            <td>{{this.date}}</td>
+            <td>{{this.lbs}}</td>
+          </tr>
         {{/each}}
       <tbody>
     </table>

@@ -18,12 +18,11 @@ function addNewWorkout() {
   var weight = document.getElementById('weight').value;
   var date = document.getElementById('date').value;
   var lbs = document.getElementById('lbs').value;
-  sendData.text = name + ',' + reps + ',' + weight + ','
-    + date + ',' + lbs;
+  sendData.text = '/?name=' + name + '&reps=' + reps + '&weight=' + weight + '&date='
+    + date + '&lbs=' + lbs;
 
   console.log(JSON.stringify(sendData));
-  sendData.text = name;
-  req.open('POST', '/');
+  req.open('POST', sendData.text);
   req.setRequestHeader('Content-type', 'application/json');
   req.send(JSON.stringify(sendData));
 

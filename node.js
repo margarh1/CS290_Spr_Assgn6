@@ -2,6 +2,7 @@ console.log('node.js Hello world');
 
 var express = require('express');
 var mysql = require('mysql');
+var bodyParser = require('body-parser');
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
@@ -17,6 +18,8 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.set('port', process.argv[2]);
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.static('public'));
 
 app.get('/',function(req,res,next){
@@ -27,15 +30,16 @@ app.get('/',function(req,res,next){
       return;
     }
     context.results = JSON.stringify(rows);
-    res.render('home', context);
-  console.log(['get', context]);
+    res.render('home', { data: JSON.parse(context.results) });
+  console.log(['get', context.results]);
   });
 });
 
 app.post('/', function(req,res,next){
-  console.log(req.query);
+  console.log(['body',req.query]);
+  var data = req.query;
   var context = {};
-  pool.query("INSERT INTO workouts(`name`) VALUES (?)", ['test'], function(err, result){
+  pool.query("INSERT INTO workouts(`name`, `reps`, `weight`, `date`, `lbs`) VALUES (?, ?, ?, ?, ?)", [data.name, data.reps, data.weight, data.date, data.lbs], function(err, result){
     if (err) {
       next(err);
       return;
